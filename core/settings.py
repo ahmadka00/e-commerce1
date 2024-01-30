@@ -130,3 +130,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# from some_secrets import AWS_ID, AWS_KEY
+# AWS_ACCESS_KEY_ID = AWS_ID
+# AWS_SECRET_ACCESS_KEY = AWS_KEY
+# AWS_DEFAULT_REGION = 'eu-west-3'
+# AWS_STORAGE_BUCKET_NAME = "e-commerce1-static"
+
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
