@@ -1,0 +1,66 @@
+{% extends 'base/layout.html' %}
+{% load static %}
+{% block title %} Home Page {% endblock %}
+{% block css %} 
+    {% block super %}
+        <link rel="stylesheet" href="{% static 'store/css/styles.css' %}">
+    {% endblock %}
+{% endblock %}
+{% block content %}
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Shop in style</h1>
+                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            </div>
+        </div>
+    </header>
+    <!-- Section-->
+   
+        {% include 'store/recent_viewed.html' %}
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Store Products</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for product in products %}
+                    {% if product.is_active == True %}
+                        <div class="col mb-5">
+                            
+                            <div class="card h-100">
+                                {% if product.in_stock == False %}
+                                    <span  class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
+                                        Out of stock
+                                    </span>
+                                    <span  class="position-absolute bottom-0 start-50 translate-middle badge rounded-pill bg-danger">
+                                        Out of stock
+                                    </span>
+                                {% endif %}
+                                <!-- Product image-->
+                                <br>
+                                <img class="card-img-top rounded" style="max-height: 120px;" src="{{ product.image.url }}" alt="..." />
+                                <!-- Product details-->
+                                
+                                
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 class="fw-bolder">{{ product.title }} </h5>
+                                       
+                                        <!-- Product price-->
+                                        <strong style="color: blue;">{{ product.price }} €</strong>
+                                    </div>
+                                </div>
+                                <!-- Product actions-->
+                                    <div class="text-center"> 
+                                        <a href="{{product.get_absolute_url}}" class="icon-link gap-1 icon-link-hover stretched-link"></a>
+                                    </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+            </div>
+        </div>
+    </section>
+{% endblock %}

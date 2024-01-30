@@ -1,0 +1,40 @@
+{% if recent_viewed_products %}
+<section class="py-5 ">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Recent Viewed products</h2>
+        <div class="row gx-4  row-cols-md-3 row-cols-lg-6 ">
+            
+            {% for recently_prodcuts in recent_viewed_products %}
+           
+                <div class="col mb-3">
+                    <div class="card h-100">
+                        {% if recently_prodcuts.in_stock == False %}
+                        <span  class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
+                            Out of stock
+                        </span>
+                        <span  class="position-absolute bottom-0 start-50 translate-middle badge rounded-pill bg-danger">
+                            Out of stock
+                        </span>
+                        {% endif %}
+                        <!-- Product image-->
+                        <br>
+                        <img class="card-img-top" style="max-height: 120px;" src="{{ recently_prodcuts.image.url }}" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ recently_prodcuts.title }} </h5>
+                                <!-- Product price-->
+                                <strong style="color: blue;">{{ recently_prodcuts.price }} €</strong>
+                            </div>
+                        </div>
+                        <div class="text-center"> 
+                            <a href="{{recently_prodcuts.get_absolute_url}}" class="icon-link gap-1 icon-link-hover stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

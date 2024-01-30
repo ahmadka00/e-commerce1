@@ -1,0 +1,101 @@
+{% extends 'base/layout.html' %}
+{% load static %}
+{% block title %} {{product.title}} {% endblock %}
+{% block content %}
+        <!-- Product section-->
+    <section class="py-5">
+        <div class="container px-3 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image.url }}" alt="..." /></div>
+                <div class="col-md-6">
+                    <div  class="fs-5 fw-medium mb-1">{{user.username | title}}</div>
+                    <h1 class="display-5 fw-bolder">{{product.title}}</h1>
+                    <div class="fs-5 mb-5">
+                        <strong style="color: blue;">{{ product.price }} €</strong>
+                    </div>
+                    <p class="lead">{{ product.description }}</p>
+                    <div class="d-flex">
+                        {% if product.in_stock == True %}
+                        <div class="">
+                            <label for="select">Qty</label>
+                            <select id="select" class="h6" style="width:50px;height:40px;">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                            </div>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-outline-dark flex-shrink-0" id="add-button" value="{{product.id}}" type="button">
+                                <i class="bi-cart-fill me-1"></i>
+                                Add to cart
+                            </button>
+                    {% else %}
+                    <button class="btn btn-danger disable flex-shrink-0" type="button">
+                        Out Of Stock
+                    </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Related items section-->
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related Products </h2>
+            {% for product_related in products_related %}
+
+            
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                    <div class="col mb-5">
+                        
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="{{product_related.image.url }}" alt="..." />
+                            <!-- Product details-->
+                            
+                            
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{ product_related.title }} </h5>
+                                    
+                                    <!-- Product price-->
+                                    <strong style="color: blue;">{{ product_related.price }} €</strong>
+                                </div>
+                            </div>
+                            <div class="text-center"> 
+                                <a href="{{ product_related.get_absolute_url }}" class="icon-link gap-1 icon-link-hover stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <br>
+
+    <script>
+        $(document).on('click', '#add-button', function(e){
+        e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "basket:add_basket" %}',
+                data: {
+                    product_id: $('#add-button').val(),
+                    product_qty: $('#select option:selected').text(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function(json){
+                    document.getElementById('basket_qty').innerHTML = json.qty
+                },
+                error: function(xhr, errmsg, err){
+
+                }
+            });
+        })
+    </script>
+{% endblock %}
