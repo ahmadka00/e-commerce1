@@ -42,51 +42,6 @@ def product_page(request, slug):
     context = {'product': product, "products_related":products_related}
     return render(request, 'store/products/single.html', context)
 
-# def product_page(request, product_id):
-#     product = Product.objects.get(pk=product_id)
-#     # retrive products related 
-#     products_related = Product.objects.filter(category=product.category, is_active=True, in_stock=True).exclude(id=product.id)
-#     user = request.user
-
-#     # create session for recent view product 
-
-#     product_id = request.GET.get('product_id')
-
-#     if product_id:
-#         # Your existing logic for recently viewed products
-#         recent_viewed_session = request.session.get('recent_viewed', [])
-        
-#         if product_id in recent_viewed_session:
-#             recent_viewed_session.remove(product_id)
-
-#         recent_viewed_session.insert(0, product_id)
-
-#         if len(recent_viewed_session) > 8:
-#             recent_viewed_session.pop()
-
-#         recent_viewed_products = Product.objects.filter(pk__in=recent_viewed_session)
-#         recent_viewed_products = sorted(recent_viewed_products, key=lambda x: recent_viewed_session.index(x.id))
-
-#         request.session['recent_viewed'] = recent_viewed_session
-#         request.session.modified = True
-
-#     else:
-#         # Handle the case when product_id is not present in the query string
-#         recent_viewed_products = []
-
-
-
-    
-#     request.session.modified = True
-
-#     context = {
-#         'product':product, 
-#         'products':products_related,
-#         'user':user,
-#         'recent_viewed_products':recent_viewed_products
-#     }
-
-#     return render(request, 'store/products/single.html', context)
 
 def category_page(request, category_slug=None):
     category = get_object_or_404(Category, slug=category_slug)
