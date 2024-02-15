@@ -123,6 +123,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'account.UserBase'
+LOGIN_REDIRECT_URL = '/account/dashboard/'
+LOGIN_URL = '/account/login'
 
 # from some_secrets import AWS_ID, AWS_KEY
 # AWS_ACCESS_KEY_ID = AWS_ID
@@ -135,3 +138,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 # AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'wishlist.ahmad@gmail.com'
+EMAIL_HOST_PASSWORD = 'juvfjvzzkhsdxxdc'

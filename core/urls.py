@@ -9,7 +9,7 @@ urlpatterns = [
     path('basket_summary/', include('basket.urls', namespace='basket')),
     path('', include('store.urls', namespace='store')),
     path('api/', include('api.urls', namespace='api')),
-    path('accoutns/', include('account.urls', namespace='account')),
+    path('account/', include('account.urls', namespace='account')),
 ]
 
 if settings.DEBUG:
