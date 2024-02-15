@@ -1,0 +1,53 @@
+{% extends "base/layout.html" %}
+{% load static %}
+
+{% block title %} Register {% endblock %}
+{% block content %}
+<div class="container text-center col-md-6 offset-md-3">
+    <div class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            {% if form.errors %}
+                <div class="alert-warning alert alert-dismissible fade show" role="alert">
+                    Your Form Has Error
+                    {% for field in form %}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+          {% endif %}
+          <div class="modal-header p-5 pb-4 border-bottom-0 justify-content-center">
+            <h1 class="fw-bold mb-0 fs-2 ">Register</h1>
+          </div>
+  
+          <div class="modal-body p-5 pt-0">
+            <form  method="POST" action="{% url 'account:register' %}">
+              {% csrf_token %}
+  
+              <div class="form-floating mb-3">
+                {{ form.user_name }}
+                <label for="{{ form.user_name.id_for_label }}">Username</label>
+              </div>
+              <div class="form-floating mb-3">
+                {{ form.email }}
+                <label for="{{ form.email.id_for_label }}">Email Address</label>
+              </div>
+              <div class="form-floating mb-3">
+                {{ form.password1 }}
+                <label for="{{ form.password1.id_for_label }}">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                {{ form.password2 }}
+                <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+              </div>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br><br>
+  </div>
+{% endblock %}
