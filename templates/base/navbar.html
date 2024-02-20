@@ -15,14 +15,31 @@
                     </ul>
                 </li>
             </ul>
-            <div class="d-flex">
+            <div class="dropdown">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i>
+                </button>
+               
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'account:logout' %}">Log out</a></li>
+                        <li><a class="dropdown-item" href="#!">Profile</a></li>
+
+                    {% else %}
+                        <li><a class="dropdown-item" href="{% url 'account:register' %}">Register</a></li>
+                        <li><a class="dropdown-item" href="{% url 'account:login' %}">Log in</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <br>
+            <div class="ms-2">
                 <a href="{% url 'basket:basket_summary' %}" class="btn btn-outline-dark">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
                     {% with total_qty=basket|length %}
                     <span id="basket-qty" class="badge bg-dark text-white ms-1 rounded-pill">
                         {% if total_qty > 0 %}
-                            {{ total_qty}}
+                            {{ total_qty }}
                         {% else %}
                             0
                         {% endif %}
@@ -30,6 +47,7 @@
                     {% endwith %}
                 </a>
             </div>
+            
             
         </div>
     </div>

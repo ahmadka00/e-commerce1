@@ -2,6 +2,7 @@ from django.urls import path
 from account import views
 from django.contrib.auth import views as auth_views
 from account.forms import UserLoginForm
+
 app_name = 'account'
 
 
