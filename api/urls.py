@@ -1,20 +1,32 @@
-from django.urls import path
+from django.urls import path, include
 from api import views
-from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework.authtoken import views as auth_views
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework import routers
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
-app_name = 'basket'
+app_name = 'api'
 
+
+router = routers.DefaultRouter()
+router.register(r'categories', views.CategoryViewSet, basename='category')
+router.register(r'products', views.ProductViewSet, basename='product')
 
 urlpatterns = [
-    path('category', views.CategoryList.as_view()),
-    path('category/<int:pk>', views.CategoryDetail.as_view()),
-    path('register/', views.UserRegisteration.as_view(), name='user_register'),
-    # path('register2/', views.user_register_view, name='register2')
+    # path('categories', views.CategoryList.as_view(), name='Category_list'),
+    # path('categories/<slug:slug>', views.CategoryDetail.as_view(), name='category_detail'),
+    # path('products', views.ProductList.as_view(), name='product_list'),
+    # path('products/<slug:slug>', views.ProductDetail.as_view(), name='product_detail'),
+    path('', include(router.urls)),
+    path('register', views.CustomUserCreate.as_view(), name='user_register'),
+    path('logout/blacklist', views.BlacklistTokenView.as_view(), name='blacklist'),
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('schema/docs/', SpectacularSwaggerView.as_view(url_name="api:schema"))
     
 ]
 
+#Token from simple JWT
 urlpatterns += [
-    path('api-token-auth/', auth_views.obtain_auth_token)
+    path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
 ]
