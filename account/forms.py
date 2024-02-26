@@ -1,7 +1,6 @@
 from django import forms
 from .models import UserBase
-
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import forms as form
 
 
 # class RegistrationForm(forms.ModelForm):
@@ -17,10 +16,9 @@ from django.contrib.auth.forms import UserCreationForm
 #         model = UserBase
 #         fields = ('user_name', 'email',)
 
-class UserLoginForm():
-    pass
 
-class RegistrationForm(UserCreationForm):
+
+class RegistrationForm(form.UserCreationForm):
     class Meta:
         model = UserBase
         fields = ['user_name', 'email', 'password1', 'password2']
@@ -49,5 +47,87 @@ class RegistrationForm(UserCreationForm):
             'class': 'form-control rounded-3',
             'id': 'floatingPassword',
             'placeholder': 'Confirm Password',
+            'autocomplete': 'off',
+        })
+
+
+
+class UserEditForm(form.UserChangeForm):
+
+    class Meta:
+        model = UserBase
+        fields = ['user_name', 'email']
+
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        self.fields['user_name'].widget = forms.TextInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingInput',
+            'placeholder': 'Username',
+            'autocomplete': 'off',
+        })
+        self.fields['email'].widget = forms.EmailInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingInput',
+            'placeholder': 'Email Address',
+            'autocomplete': 'off',
+        })
+
+
+
+# password Reset Form
+
+class UserPasswordChangeForm(form.PasswordChangeForm):
+
+    model = UserBase
+    fields = ['old_password', 'new_password1', 'new_password2']
+    def __init__(self, *args, **kwargs):
+        super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.fields['old_password'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingOldPassword',
+            'placeholder': 'Old Password',
+            'autocomplete': 'off',
+        })
+        self.fields['new_password1'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingNewPassword1',
+            'placeholder': 'New Password',
+            'autocomplete': 'off',
+        })
+        self.fields['new_password2'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingNewPassword2',
+            'placeholder': 'Confirm New Password',
+            'autocomplete': 'off',
+        })
+
+
+class UserPasswordResetForm(form.PasswordResetForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UserPasswordResetForm, self).__init__(*args, **kwargs)
+        self.fields['email'].widget = forms.EmailInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingInput',
+            'placeholder': 'Email Address',
+            'autocomplete': 'off',
+        })
+
+
+class UserPasswordResetConfirmViewForm(form.SetPasswordForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password1'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingNewPassword1',
+            'placeholder': 'New Password',
+            'autocomplete': 'off',
+        })
+        self.fields['new_password2'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'floatingNewPassword2',
+            'placeholder': 'Confirm New Password',
             'autocomplete': 'off',
         })

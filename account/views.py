@@ -7,14 +7,31 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
-from .forms import RegistrationForm
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.mixins import LoginRequiredMixin 
+from .forms import *
 from .token import account_activation_token
+from .models import UserBase
+from django.urls import reverse_lazy
 
-
-@login_required
+@login_required(login_url='account:login') 
 def dashboard(request):
     return render(request, 'account/user/dashboard.html')
+
+
+@login_required(login_url='account:login') 
+def edit_details(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+
+    else:
+        user_form = UserEditForm(instance=request.user)
+
+    return render(request, 'account/edit_details.html', {'user_form':user_form} )
+
 
 def login_user(request):
     if request.method == 'POST':
@@ -34,7 +51,7 @@ def login_user(request):
             return render(request, 'account/login.html')
 
 
-@login_required
+@login_required(login_url='account:login') 
 def logout_user(request):
     logout(request)
     return redirect('store:home')
@@ -51,11 +68,11 @@ def account_register(request):
             user.set_password(form.cleaned_data['password1'])
             user.save()
 
-            # Send activation email
+          
             send_activation_email(request, user)
             
-            # Redirect to a success page or return a response
-            return HttpResponse('An email verification has been sent')  # You can replace 'registration_success' with your success URL
+        
+            return render(request, 'account/email/email_verification_sent.html') 
 
     else:
         form = RegistrationForm()
@@ -90,8 +107,16 @@ def account_activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('account:dashboard')
+        return render(request, 'account/email/activation_success.html')
     else:
         return render(request, 'account/email/activation_invalid.html')
     
 
+
+
+    
+class UserPasswordChange(PasswordChangeView, LoginRequiredMixin):
+    model = UserBase
+    form_class = UserPasswordChangeForm
+    template_name = 'account/change_password.html'
+    success_url = reverse_lazy('store:home')
